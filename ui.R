@@ -41,7 +41,7 @@ dashboardPage(skin="blue",
     fluidRow(
       box(
         h3("Your Original Message:"),
-        textInput(inputId = "origMessage", label = NULL, value = "rebels to ratify constitution on 17 septembre 1787"),
+        textInput(inputId = "origMessage", label = NULL, value = "444"),
         actionButton(inputId = "translateButton", label = "Translate!", icon = icon("gear")),
         width = 6
         ),

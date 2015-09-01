@@ -18,3 +18,13 @@ font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 .control-label {
 	margin-bottom: 25px;
 }
+
+#translateButton {
+	background-color: #3c8dbc;
+	color: #FFFFFF;
+	font-weight: bold;
+}
+
+.col-sm-6+ .col-sm-6 .box-body {
+	height: 157px;
+}
