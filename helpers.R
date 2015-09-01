@@ -7,6 +7,16 @@ numericToWordCipher <- data[1:765,]
 letterToLetterCipher <- data[767:792,]
 letterToNumericCipher <- data[794:803,]
 
+capwords <- numericToWordCipher[grep("([A-Z][a-z.]+ )", numericToWordCipher$Word),2]
+
+capwords <- sapply(capwords, function(word) {
+  strsplit(word, " ")[[1]][1]
+})
+
+capwords <- unique(as.vector(capwords))
+
+# FUNCTIONS BELOW, DATA DEFINITIONS ABOVE
+
 detect.variant <- sapply(splitWord, function(char) {
   word <- letterToNumericCipher[grep(char, letterToNumericCipher$Word),1]
 })
@@ -73,4 +83,11 @@ decrypt.message <- function(message) {
 
 encrypt.message <- function(plaintext) {
   plaintext <- strsplit(plaintext, " ")[[1]]
+  newMessage <- ""
+  
+  text_index <- 0
+  
+  for (word in plaintext) {
+    
+  }
 }
