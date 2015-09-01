@@ -139,7 +139,7 @@ decrypt.message <- function(message) {
   
 }
 
-encrypt.message <- function(plaintext) {
+encrypt.message <- function(plaintext, levDist) {
   plaintext <- strsplit(plaintext, " ")[[1]]
   newMessage <- ""
   
@@ -182,7 +182,7 @@ encrypt.message <- function(plaintext) {
     
     else {
       
-      guess <- detect.variant(word, 4)
+      guess <- detect.variant(word, levDist)
       if (!is.null(guess)) {
         newMessage <- paste(newMessage, " ~", guess, " ", sep="")
       } else {

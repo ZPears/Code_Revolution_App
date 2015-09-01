@@ -33,7 +33,8 @@ dashboardPage(skin="blue",
           outputs until you find the sensitivity level you're comfortable with!"),
         p("The number you set using ", strong("Word Variant Sensitivity"), " represents a 
           maximum levenshtein distance for the input strings and their potential variants. 
-          More information about the levenshtein distance can be found at this link."),
+          More information about the levenshtein distance", a("can be found at this link.",
+                                                              href = "https://en.wikipedia.org/wiki/Levenshtein_distance") ),
         width = 12
       )
     ),
