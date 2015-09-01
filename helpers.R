@@ -42,7 +42,7 @@ decrypt.message <- function(message) {
       word <- strsplit(word, "~")[[1]][2]
     }
     
-    if (check.for.errors(word) == TRUE) {
+    if (check.for.errors(word)) {
       return("INPUT_ERROR: do not mix letters and numbers in the same word. Please try again.")
     }
     
@@ -98,5 +98,36 @@ encrypt.message <- function(plaintext) {
     textIndex <- textIndex+1
   }
   
-  print(textIndex)
+  for (word in plaintext) {
+  
+    if (check.for.errors(word)) {
+      return("INPUT_ERROR: do not mix letters and numbers in the same word. Please try again.")
+    }
+    
+    else if (!is.na(as.integer(word))) {
+      newWord <- sapply(strsplit(word, split="")[[1]], function(char) {
+        word <- letterToNumericCipher[grep(char, letterToNumericCipher$Numeric.Code),2]
+      })
+      newWord <- paste(newWord, collapse="")
+      newWord <- paste("_", newWord, "_", sep="")
+      newMessage <- paste(newMessage, newWord, sep=" ")
+      
+    }
+    
+    else if (word %in% numericToWordCipher$Word) {
+      newWord <- numericToWordCipher[
+        grep(paste0("(^", word, "$)"),
+        numericToWordCipher$Word),1
+      ]
+      newMessage <- paste(newMessage, newWord, sep=" ")
+    }
+    
+    else {
+      newMessage <- paste(newMessage, "TBI", sep=" ")
+    }
+
+  }
+  
+  substr(newMessage,2,nchar(newMessage))
+  
 }
