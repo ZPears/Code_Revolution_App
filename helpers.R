@@ -25,12 +25,56 @@ detect.variant <- function(word, levDist) {
   }
   
   narrowedCipher <- numericToWordCipher[grep(paste0("^", substr(word,1,1)), numericToWordCipher$Word),]
+  narrowedCipher <- narrowedCipher[nchar(narrowedCipher$Word) > nchar(word) - levDist,]
+  narrowedCipher <- narrowedCipher[nchar(narrowedCipher$Word) < nchar(word) + levDist,]
+ 
+  if (nchar(word) < 6) {
+    xChars <- 3
+  } else {
+    xChars <- nchar(word) - 3
+  }
   
+  narrowedCipher <- narrowedCipher[substr(narrowedCipher$Word,1,xChars) == substr(word,1,xChars),]
+  
+  if (length(narrowedCipher$Word) == 0) {
+    return(NULL)
+  } else if (length(narrowedCipher$Word) == 1) {
+    return(narrowedCipher$Word[1])
+  } else {
+    levenshtein(narrowedCipher, word, levDist)
+  }
   
 }
 
-levenshtein <- function(narrowedCipher, word, levDist) {
+tester <- function(word1, word2) {
+  word1 <- strsplit(word1, "")[[1]]
+  word2 <- strsplit(word2, "")[[1]]
   
+  if (length(word1) > length(word2)) {
+    longer <- word1
+  } else {
+    longer <- word2
+  }
+  
+  distance <- 0
+  
+  for (counter in (1:length(longer))) {
+    if (word1[counter] != word2[counter]) {
+      distance <- distance + 1
+    } else if (is.na(word1[counter]) || is.na(word2[counter])) {
+      distance <- distance + 1
+    }
+  }
+    
+}
+
+levenshtein <- function(narrowedCipher, word, levDist) {
+  answer <- ""
+  print(word)
+  for (value in narrowedCipher$Word) {
+    value <- tolower(value)
+    newLeast <- 0
+  }
 }
 
 check.for.errors <- function(word) {
