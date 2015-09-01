@@ -39,33 +39,11 @@ detect.variant <- function(word, levDist) {
   if (length(narrowedCipher$Word) == 0) {
     return(NULL)
   } else if (length(narrowedCipher$Word) == 1) {
-    return(narrowedCipher$Word[1])
+    return(narrowedCipher$Numeric.Code[1])
   } else {
     levenshtein(narrowedCipher, word, levDist)
   }
   
-}
-
-tester <- function(word1, word2) {
-  word1 <- strsplit(word1, "")[[1]]
-  word2 <- strsplit(word2, "")[[1]]
-  
-  if (length(word1) > length(word2)) {
-    longer <- word1
-  } else {
-    longer <- word2
-  }
-  
-  distance <- 0
-  
-    for (counter in (1:length(longer))) {
-      if (word1[counter] != word2[counter]) {
-        distance <- distance + 1
-      } else if (is.na(word1[counter]) || is.na(word2[counter])) {
-        distance <- distance + 1
-      }
-    }
-    
 }
 
 levenshtein <- function(narrowedCipher, word, levDist) {
@@ -86,9 +64,9 @@ levenshtein <- function(narrowedCipher, word, levDist) {
     }
     
     for (counter in (1:length(longer))) {
-      if (word1[counter] != word2[counter]) {
+      if (is.na(word[counter]) || is.na(value[counter])) {
         newLeast <- newLeast + 1
-      } else if (is.na(word1[counter]) || is.na(word2[counter])) {
+      } else if (word[counter] != value[counter]) {
         newLeast <- newLeast + 1
       }
     }
@@ -96,7 +74,7 @@ levenshtein <- function(narrowedCipher, word, levDist) {
     if (newLeast == 1) {
       return(paste(value, collapse=""))
     } else if (newLeast < levDist) {
-      answer <- paste(value, collapse="")
+      answer <- narrowedCipher[narrowedCipher$Word == paste(value, collapse=""),]
       levDist <- newLeast
     }
     
