@@ -1,12 +1,52 @@
 dashboardPage(skin="blue",
               
-  dashboardHeader(title = "Cupler Code Translator"),
+  dashboardHeader(title = "Control Panel"),
   
   dashboardSidebar(
+    
+    h2("App Settings:"),
+    br(),br(),
+    radioButtons(
+      "functionSelect", "Select Function:",
+      c("Decrypt Message", "Encrypt Message", "Encrypt and Decrypt Message")
+    ),
+    br(),br(),
+    sliderInput("levDist", "Word Variant Sensitivity:", 2, 5, 4)
   ),
   
   dashboardBody(
+   
+    fluidRow(
+      box(
+        h1("Welcome to the Culper Code Translator!"),
+        h2("Here's how it works:"),
+        p("Use the ", strong("Control Panel"), " on the left to set your parameters."),
+        p(strong("Select Function"), " allows you to choose whether your input should be
+          decrypted, encrypted, or encrypted and then decrypted. The last option is useful
+          if you want to compare your expected output with the actual output."),
+        p(strong('Word Variant Sensitivity'), " lets you set how sensitive 
+          the function that encrypts messages should be when it looks for word variants. 
+          The lower this number is, the more variants it wll catch, but it will also find more 
+          false positives. The opposite it true as the number gets higher. Use the ",
+          strong("Encrypt and Decrypt Message"), "function to compare inputs and 
+          outputs until you find the sensitivity level you're comfortable with!"),
+        p("The number you set using ", strong("Word Variant Sensitivity"), " represents a 
+          maximum levenshtein distance for the input strings and their potential variants. 
+          More information about the levenshtein distance can be found at this link."),
+        width = 12
+      )
+    ),
     
+    fluidRow(
+      box(
+        h3("Enter your message here:"),
+        width = 6
+        ),
+      
+      box(
+        h3("Your translated message will appear here:"),
+        width = 6
+        )
+    )
   )
-  
 )
