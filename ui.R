@@ -4,7 +4,7 @@ dashboardPage(skin="blue",
   
   dashboardSidebar(
     
-    h2("App Settings:"),
+    h2("Settings:"),
     br(),br(),
     radioButtons(
       "functionSelect", "Select Function:",
@@ -20,6 +20,7 @@ dashboardPage(skin="blue",
       box(
         h1("Welcome to the Culper Code Translator!"),
         h2("Here's how it works:"),
+        br(),
         p("Use the ", strong("Control Panel"), " on the left to set your parameters."),
         p(strong("Select Function"), " allows you to choose whether your input should be
           decrypted, encrypted, or encrypted and then decrypted. The last option is useful
@@ -50,6 +51,9 @@ dashboardPage(skin="blue",
         textOutput("newMessage"),
         width = 6
         )
-    )
+    ),
+    
+    includeCSS("www/custom.css")
+    
   )
 )
