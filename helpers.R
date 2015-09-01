@@ -1,7 +1,7 @@
 data <- read.csv("Culper Codes - Sheet1.csv", stringsAsFactors = FALSE)
 
 data[767,1] <- "A"
-data[584,1] <- "reinforcement"
+data[584,2] <- "reinforcement"
 
 numericToWordCipher <- data[1:765,]
 letterToLetterCipher <- data[767:792,]
@@ -22,8 +22,6 @@ check.for.errors <- function(word) {
 decrypt.message <- function(message) {
   message <- strsplit(message, " ")[[1]]
   newMessage <- ""
-  
-  #change to for loop. sapply doesn't persist information
   
   for (word in message) {
     if (substr(word,1,1) == "~") {
@@ -50,8 +48,10 @@ decrypt.message <- function(message) {
     } 
     
     else if (!is.na((as.integer(word))) && (as.integer(word) < 764)) {
-      print(word)
-      newWord <- numericToWordCipher[grep(word, numericToWordCipher$Numeric.Code),2]
+      newWord <- numericToWordCipher[
+        grep(paste0("(^", word, "$)"),
+        numericToWordCipher$Numeric.Code),2
+        ]
       newMessage <- paste(newMessage, newWord, sep = " ")
     }
     
