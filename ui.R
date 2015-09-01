@@ -39,12 +39,15 @@ dashboardPage(skin="blue",
     
     fluidRow(
       box(
-        h3("Enter your message here:"),
+        h3("Your Original Message:"),
+        textInput(inputId = "origMessage", label = NULL, value = "rebels to ratify constitution on 17 septembre 1787"),
+        actionButton(inputId = "translateButton", label = "Translate!", icon = icon("gear")),
         width = 6
         ),
       
       box(
-        h3("Your translated message will appear here:"),
+        h3("Your Translated Message:"),
+        textOutput("newMessage"),
         width = 6
         )
     )
