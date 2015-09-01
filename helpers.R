@@ -16,7 +16,11 @@ levenshtein <- function(narrowedCipher, word) {
 }
 
 check.for.errors <- function(word) {
-  
+  if (grepl("([a-zA-Z])", word) && grepl("([0-9])", word)) {
+    return(TRUE)
+  } else {
+    return(FALSE)
+  }
 }
 
 decrypt.message <- function(message) {
@@ -28,7 +32,9 @@ decrypt.message <- function(message) {
       word <- strsplit(word, "~")[[1]][2]
     }
     
-    # check.for.errors(word)
+    if (check.for.errors(word) == TRUE) {
+      return("INPUT_ERROR: do not mix letters and numbers in the same word. Please try again.")
+    }
     
     if (substr(word,1,1) == "_") {
       word <- substr(word,2,nchar(word)-1)
