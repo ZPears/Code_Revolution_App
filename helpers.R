@@ -7,13 +7,13 @@ numericToWordCipher <- data[1:765,]
 letterToLetterCipher <- data[767:792,]
 letterToNumericCipher <- data[794:803,]
 
-capwords <- numericToWordCipher[grep("([A-Z][a-z.]+ )", numericToWordCipher$Word),2]
+capWords <- numericToWordCipher[grep("([A-Z][a-z.]+ )", numericToWordCipher$Word),2]
 
-capwords <- sapply(capwords, function(word) {
+capWords <- sapply(capwords, function(word) {
   strsplit(word, " ")[[1]][1]
 })
 
-capwords <- unique(as.vector(capwords))
+capWords <- unique(as.vector(capwords))
 
 # FUNCTIONS BELOW, DATA DEFINITIONS ABOVE
 
@@ -85,9 +85,18 @@ encrypt.message <- function(plaintext) {
   plaintext <- strsplit(plaintext, " ")[[1]]
   newMessage <- ""
   
-  text_index <- 0
+  textIndex <- 1
   
   for (word in plaintext) {
-    
+    if (grepl("([A-Z])", substr(word,1,1)) && (word %in% capWords)) {
+      plaintext[textIndex] <- paste(plaintext[textIndex], 
+                                    " ", 
+                                    plaintext[textIndex], 
+                                    sep="")
+      plaintext <- plaintext[-(textIndex+1)]
+    }
+    textIndex <- textIndex+1
   }
+  
+  print(textIndex)
 }
