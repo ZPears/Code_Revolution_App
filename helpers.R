@@ -34,29 +34,35 @@ decrypt.message <- function(message) {
     
     if (substr(word,1,1) == "_") {
       word <- substr(word,2,nchar(word)-1)
-      newWord <- sapply(word, function(char) {
+      newWord <- sapply(strsplit(word, split="")[[1]], function(char) {
         word <- letterToNumericCipher[grep(char, letterToNumericCipher$Word),1]
       })
-      newWord <- paste(names(newWord), collapse="")
-        #for (char in strsplit(word, "")[[1]]) {
-        #  newWord <- paste(newWord, 
-        #                   letterToNumericCipher[grep(char, letterToNumericCipher$Word),1],
-        #                   sep="")
-        #}
-      print(newWord)
-      newMessage <- paste(newMessage, newWord)
-      print(newMessage)
-    } #else if (word.downcase == is letter) {
-      
-    #} else if (#word is integer != NA) & word is integer < 764) {
-      
-    #} else {
-      
-    #}
+      newWord <- paste(newWord, collapse="")
+      newMessage <- paste(newMessage, newWord, sep=" ")
+    } 
+    
+    else if (grepl("(^[a-z]+$)", tolower(word))) {
+      newWord <- sapply(strsplit(word, split="")[[1]], function(char) {
+        word <- tolower(letterToLetterCipher[grep(char, letterToLetterCipher$Word),1])
+      })
+      newWord <- paste(newWord, collapse="")
+      newMessage <- paste(newMessage, newWord, sep=" ")
+    } 
+    
+    else if (!is.na((as.integer(word))) && (as.integer(word) < 764)) {
+      print(word)
+      newWord <- numericToWordCipher[grep(word, numericToWordCipher$Numeric.Code),2]
+      newMessage <- paste(newMessage, newWord, sep = " ")
+    }
+    
+    else {
+      newMessage <- paste(newMessage, "VALUE_MISSING", sep = " ")
+    }
     
   }
   
-  print(newMessage)
+  substr(newMessage,2,nchar(newMessage))
+  
 }
 
 encrypt.message <- function(plaintext) {
