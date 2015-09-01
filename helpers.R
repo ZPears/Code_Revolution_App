@@ -17,11 +17,19 @@ capWords <- unique(as.vector(capwords))
 
 # FUNCTIONS BELOW, DATA DEFINITIONS ABOVE
 
-detect.variant <- sapply(splitWord, function(char) {
-  word <- letterToNumericCipher[grep(char, letterToNumericCipher$Word),1]
-})
+detect.variant <- function(word, levDist) {
+  word <- tolower(word)
 
-levenshtein <- function(narrowedCipher, word) {
+  if (nchar(word) <= (levDist)) {
+    return(NULL)
+  }
+  
+  narrowedCipher <- numericToWordCipher[grep(paste0("^", substr(word,1,1)), numericToWordCipher$Word),]
+  
+  
+}
+
+levenshtein <- function(narrowedCipher, word, levDist) {
   
 }
 
@@ -123,7 +131,14 @@ encrypt.message <- function(plaintext) {
     }
     
     else {
-      newMessage <- paste(newMessage, "TBI", sep=" ")
+      
+      #IMPLEMENT GUESSING
+      
+      newWord <- sapply(strsplit(toupper(word), split="")[[1]], function(char) {
+        word <- tolower(letterToLetterCipher[grep(char, letterToLetterCipher$Numeric.Code),2])
+      })
+      newWord <- paste(newWord, collapse="")
+      newMessage <- paste(newMessage, newWord, sep=" ")
     }
 
   }
