@@ -11,7 +11,7 @@ dashboardPage(skin="blue",
       c("Decrypt Message", "Encrypt Message", "Encrypt and Decrypt Message")
     ),
     br(),br(),
-    sliderInput("levDist", "Word Variant Sensitivity:", 1, 5, 4)
+    sliderInput("levDist", "Word Variant Sensitivity:", 0, 5, 4)
   ),
   
   dashboardBody(
@@ -21,7 +21,7 @@ dashboardPage(skin="blue",
         h1("Welcome to the Culper Code Translator!"),
         h2("Here's how it works:"),
         br(),
-        p("Use the ", strong("Control Panel"), " on the left to set your parameters."),
+        p("Use the ", strong("Control Panel"), " on the left to set your parameters. Use the ", strong("Message Boxes"), " below to decrypt or encrypt your message."),
         p(strong("Select Function"), " allows you to choose whether your input should be
           decrypted, encrypted, or encrypted and then decrypted. The last option is useful
           if you want to compare your expected output with the actual output."),
@@ -32,8 +32,9 @@ dashboardPage(skin="blue",
           strong("Encrypt and Decrypt Message"), "function to compare inputs and 
           outputs until you find the sensitivity level you're comfortable with!"),
         p("The number you set using ", strong("Word Variant Sensitivity"), " represents a 
-          maximum levenshtein distance for the input strings and their potential variants. 
-          More information about the levenshtein distance", a("can be found at this link.",
+          maximum levenshtein distance for the input strings and their potential variants. ",
+          "The translator will only match strings with a levensthein distance ", strong("less"),
+          " than the sensitivity value. More information about the levenshtein distance", a("can be found at this link.",
                                                               href = "https://en.wikipedia.org/wiki/Levenshtein_distance") ),
         width = 12,
         solidHeader = TRUE,

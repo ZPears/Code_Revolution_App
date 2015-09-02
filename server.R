@@ -18,11 +18,11 @@ shinyServer(function(input,output) {
     }
     
     else if (funcSelect() == "Encrypt Message") {
-      encrypt.message(input$origMessage, input$levDist)
+      encrypt.message(input$origMessage, input$levDist)[1]
     }
     
     else {
-      decrypt.message(encrypt.message(input$origMessage, input$levDist))
+      decrypt.message(encrypt.message(input$origMessage, input$levDist)[1])
     }
   })
   

@@ -9,32 +9,31 @@ letterToNumericCipher <- data[794:803,]
 
 capWords <- numericToWordCipher[grep("([A-Z][a-z.]+ )", numericToWordCipher$Word),2]
 
-capWords <- sapply(capwords, function(word) {
+capWords <- sapply(capWords, function(word) {
   strsplit(word, " ")[[1]][1]
 })
 
-capWords <- unique(as.vector(capwords))
+capWords <- unique(as.vector(capWords))
 
 # FUNCTIONS BELOW, DATA DEFINITIONS ABOVE
 
 detect.variant <- function(word, levDist) {
-  word <- tolower(word)
 
   if (nchar(word) <= (levDist)) {
     return(NULL)
   }
   
-  narrowedCipher <- numericToWordCipher[grep(paste0("^", substr(word,1,1)), numericToWordCipher$Word),]
+  narrowedCipher <- numericToWordCipher[grep(paste0("^", substr(word,1,1)), numericToWordCipher$Word, ignore.case = TRUE),]
   narrowedCipher <- narrowedCipher[nchar(narrowedCipher$Word) > nchar(word) - levDist,]
   narrowedCipher <- narrowedCipher[nchar(narrowedCipher$Word) < nchar(word) + levDist,]
- 
+  
   if (nchar(word) < 6) {
     xChars <- 3
   } else {
     xChars <- nchar(word) - 3
   }
   
-  narrowedCipher <- narrowedCipher[substr(narrowedCipher$Word,1,xChars) == substr(word,1,xChars),]
+  narrowedCipher <- narrowedCipher[tolower(substr(narrowedCipher$Word,1,xChars)) == tolower(substr(word,1,xChars)),]
   
   if (length(narrowedCipher$Word) == 0) {
     return(NULL)
@@ -72,9 +71,10 @@ levenshtein <- function(narrowedCipher, word, levDist) {
     }
     
     if (newLeast == 1) {
-      return(paste(value, collapse=""))
+      answer <- narrowedCipher[narrowedCipher$Word == paste(value, collapse=""),1]
+      return(answer)
     } else if (newLeast < levDist) {
-      answer <- narrowedCipher[narrowedCipher$Word == paste(value, collapse=""),]
+      answer <- narrowedCipher[narrowedCipher$Word == paste(value, collapse=""),1]
       levDist <- newLeast
     }
     
@@ -101,6 +101,22 @@ check.for.quotes <- function(message) {
   }
 }
 
+join.words <- function(message) {
+  textIndex <- 1
+  for (word in message) {
+    if (grepl("([A-Z])", substr(word,1,1)) && (word %in% capWords)) {
+      message[textIndex] <- paste(message[textIndex], 
+                                    " ", 
+                                    message[textIndex+1], 
+                                    sep="")
+      message <- message[-(textIndex+1)]
+    } else {
+    textIndex <- textIndex+1
+    }
+  }
+  return(message)
+}
+
 decrypt.message <- function(message) {
   if (check.for.quotes(message)) {
     return("No need to enclose your message in quotes. Delete them and try again!")
@@ -110,6 +126,8 @@ decrypt.message <- function(message) {
   newMessage <- ""
   
   for (word in message) {
+    word <- tolower(word)
+    
     if (substr(word,1,1) == "~") {
       word <- strsplit(word, "~")[[1]][2]
     }
@@ -160,19 +178,8 @@ encrypt.message <- function(plaintext, levDist) {
   
   plaintext <- strsplit(plaintext, " ")[[1]]
   newMessage <- ""
-  
-  textIndex <- 1
-  
-  for (word in plaintext) {
-    if (grepl("([A-Z])", substr(word,1,1)) && (word %in% capWords)) {
-      plaintext[textIndex] <- paste(plaintext[textIndex], 
-                                    " ", 
-                                    plaintext[textIndex], 
-                                    sep="")
-      plaintext <- plaintext[-(textIndex+1)]
-    }
-    textIndex <- textIndex+1
-  }
+
+  plaintext <- join.words(plaintext)
   
   for (word in plaintext) {
   
@@ -199,16 +206,19 @@ encrypt.message <- function(plaintext, levDist) {
     }
     
     else {
-      
       guess <- detect.variant(word, levDist)
       if (!is.null(guess)) {
-        newMessage <- paste(newMessage, " ~", guess, " ", sep="")
+        newMessage <- paste(newMessage, " ~", guess, sep="")
       } else {
-        newWord <- sapply(strsplit(toupper(word), split="")[[1]], function(char) {
-          word <- tolower(letterToLetterCipher[grep(char, letterToLetterCipher$Numeric.Code),2])
-        })
-        newWord <- paste(newWord, collapse="")
-        newMessage <- paste(newMessage, newWord, sep=" ")
+        words <- strsplit(word, " ")[[1]]
+        for (word in words) {
+          newWord <- sapply(strsplit(toupper(word), split="")[[1]], function(char) {
+            word <- tolower(letterToLetterCipher[grep(char, letterToLetterCipher$Numeric.Code),2])
+          })
+          newWord <- paste(newWord, collapse="")
+          newMessage <- paste(newMessage, newWord, sep=" ")
+        }
+
       }  
       
     }
