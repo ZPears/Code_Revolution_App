@@ -35,7 +35,9 @@ dashboardPage(skin="blue",
           maximum levenshtein distance for the input strings and their potential variants. 
           More information about the levenshtein distance", a("can be found at this link.",
                                                               href = "https://en.wikipedia.org/wiki/Levenshtein_distance") ),
-        width = 12
+        width = 12,
+        solidHeader = TRUE,
+        status = "primary"
       )
     ),
     
@@ -44,14 +46,18 @@ dashboardPage(skin="blue",
         h3("Your Original Message:"),
         textInput(inputId = "origMessage", label = NULL, value = "444"),
         actionButton(inputId = "translateButton", label = "Translate!", icon = icon("gear")),
-        width = 6
+        width = 6,
+        solidHeader = TRUE,
+        status = "primary"
         ),
       
       box(
         h3("Your Translated Message:"),
         br(),
         textOutput("newMessage"),
-        width = 6
+        width = 6,
+        solidHeader = TRUE,
+        status = "primary"
         )
     ),
     

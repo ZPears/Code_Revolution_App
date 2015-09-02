@@ -91,8 +91,18 @@ check.for.errors <- function(word) {
   }
 }
 
-decrypt.message <- function(message) {
+check.for.quotes <- function(message) {
   if (substr(message,1,1) == "'" | substr(message,1,1) == "\"") {
+    return(TRUE)
+  } else if (message == "No need to enclose your message in quotes. Delete them and try again!") {
+    return(TRUE)
+  } else {
+    return(FALSE)
+  }
+}
+
+decrypt.message <- function(message) {
+  if (check.for.quotes(message)) {
     return("No need to enclose your message in quotes. Delete them and try again!")
   }
   
@@ -144,6 +154,10 @@ decrypt.message <- function(message) {
 }
 
 encrypt.message <- function(plaintext, levDist) {
+  if (check.for.quotes(plaintext)) {
+    return("No need to enclose your message in quotes. Delete them and try again!")
+  }
+  
   plaintext <- strsplit(plaintext, " ")[[1]]
   newMessage <- ""
   

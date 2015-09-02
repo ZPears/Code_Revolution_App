@@ -14,7 +14,6 @@ shinyServer(function(input,output) {
   #reactive events
   translate <- eventReactive(input$translateButton, {
     if (funcSelect() == "Decrypt Message") {
-      #return(substr(input$origMessage,1,1) == "'")
       decrypt.message(input$origMessage)
     }
     
