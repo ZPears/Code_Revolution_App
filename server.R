@@ -14,15 +14,16 @@ shinyServer(function(input,output) {
   #reactive events
   translate <- eventReactive(input$translateButton, {
     if (funcSelect() == "Decrypt Message") {
+      #return(substr(input$origMessage,1,1) == "'")
       decrypt.message(input$origMessage)
     }
     
     else if (funcSelect() == "Encrypt Message") {
-      encrypt.message(input$origMessage, levDist)
+      encrypt.message(input$origMessage, input$levDist)
     }
     
     else {
-      decrypt.message(encrypt.message(input$origMessage, levDist))
+      decrypt.message(encrypt.message(input$origMessage, input$levDist))
     }
   })
   

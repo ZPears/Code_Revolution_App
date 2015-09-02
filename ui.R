@@ -11,7 +11,7 @@ dashboardPage(skin="blue",
       c("Decrypt Message", "Encrypt Message", "Encrypt and Decrypt Message")
     ),
     br(),br(),
-    sliderInput("levDist", "Word Variant Sensitivity:", 2, 5, 4)
+    sliderInput("levDist", "Word Variant Sensitivity:", 1, 5, 4)
   ),
   
   dashboardBody(
@@ -49,6 +49,7 @@ dashboardPage(skin="blue",
       
       box(
         h3("Your Translated Message:"),
+        br(),
         textOutput("newMessage"),
         width = 6
         )

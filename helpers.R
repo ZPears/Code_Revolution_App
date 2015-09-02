@@ -92,6 +92,10 @@ check.for.errors <- function(word) {
 }
 
 decrypt.message <- function(message) {
+  if (substr(message,1,1) == "'" | substr(message,1,1) == "\"") {
+    return("No need to enclose your message in quotes. Delete them and try again!")
+  }
+  
   message <- strsplit(message, " ")[[1]]
   newMessage <- ""
   
