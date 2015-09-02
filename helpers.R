@@ -101,6 +101,14 @@ check.for.quotes <- function(message) {
   }
 }
 
+check.illegal.chars <- function(word) {
+  if (!grepl("(^[A-Za-z0-9 ]+$)", word)) {
+    return(TRUE)
+  } else {
+    return(FALSE)
+  }
+}
+
 join.words <- function(message) {
   textIndex <- 1
   for (word in message) {
@@ -120,6 +128,10 @@ join.words <- function(message) {
 decrypt.message <- function(message) {
   if (check.for.quotes(message)) {
     return("No need to enclose your message in quotes. Delete them and try again!")
+  }
+  
+  if (message == "Sorry, your message contains characters (punctuation, underscores) that can't be encrypted. Please remove them and try again.") {
+    return("Sorry, your message contains characters (punctuation, underscores) that can't be encrypted. Please remove them and try again.")
   }
   
   message <- strsplit(message, " ")[[1]]
@@ -187,6 +199,11 @@ encrypt.message <- function(plaintext, levDist) {
       return("INPUT_ERROR: do not mix letters and numbers in the same word. Please try again.")
     }
     
+    else if (check.illegal.chars(word)) {
+      print(word)
+      return("Sorry, your message contains characters (punctuation, underscores) that can't be encrypted. Please remove them and try again.")
+    }
+    
     else if (!is.na(as.integer(word))) {
       newWord <- sapply(strsplit(word, split="")[[1]], function(char) {
         word <- letterToNumericCipher[grep(char, letterToNumericCipher$Numeric.Code),2]
@@ -218,10 +235,8 @@ encrypt.message <- function(plaintext, levDist) {
           newWord <- paste(newWord, collapse="")
           newMessage <- paste(newMessage, newWord, sep=" ")
         }
-
-      }  
-      
-    }
+      }
+    }  
 
   }
   
