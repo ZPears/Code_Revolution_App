@@ -48,7 +48,7 @@ dashboardPage(skin="blue",
     fluidRow(
       box(
         h3("Your Original Message:"),
-        textInput(inputId = "origMessage", label = NULL, value = "444"),
+        textInput(inputId = "origMessage", label = NULL, value = "_ekuu_ 613 uvlqpa 684 _kuu_ 255"),
         actionButton(inputId = "translateButton", label = "Translate!", icon = icon("gear")),
         width = 6,
         solidHeader = TRUE,
